@@ -1,0 +1,27 @@
+- hosts: DockerEE-node
+  gather_facts: no
+  roles:
+   - docker
+   - ntp
+
+- hosts: UCP
+  gather_facts: no
+  roles:
+   - ucp
+
+#- hosts: UCP-replicas
+#  gather_facts: no
+#  roles:
+#   - ucpreplicas
+
+- hosts: worker
+  gather_facts: no
+  roles:
+   - worker
+
+- hosts: DTR
+  gather_facts: no
+  roles:
+   - dtr
+
+

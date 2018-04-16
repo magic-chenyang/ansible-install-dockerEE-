@@ -1,0 +1,14 @@
+- hosts: '123'
+  gather_facts: false
+
+#  vars_files:
+#    - ../group_vars/vars
+  tasks:
+    - name: nginx123
+      docker_container:
+        name: nginx
+        image: nginx
+#        devices:
+#        - "/root/ansible/roles/nginx/files/nginx.conf:/etc/nginx/nginx.conf:ro"
+#        ports:
+#        - "812:80"

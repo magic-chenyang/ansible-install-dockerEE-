@@ -1,0 +1,3 @@
+---
+
+ucp-main: "{{ groups['UCP-manager'][0] }}.{{ domain_name }}"

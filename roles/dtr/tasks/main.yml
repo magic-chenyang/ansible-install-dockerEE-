@@ -1,0 +1,22 @@
+- name: Get worker token
+  include_vars:
+    file: /tmp/worker_token
+    name: add_worker
+- name: Add Worker nodes to the swarm
+  command: "{{ add_worker.token }}"
+
+- name: download and install DTR
+  shell:
+    docker run -t --rm  docker/dtr:{{ DTR_Version }} install --ucp-node {{ DTR_Hostname }} --ucp-insecure-tls --ucp-password {{ UCP_Admin_Pass }} --ucp-url {{ UCP_URL }} --ucp-username {{ UCP_Admin }}
+  when: inventory_hostname in groups.dtr-main
+
+- name: Get replica ID
+  shell: 
+    docker ps --format "{{ '{{' }}.Names{{ '}}' }}" | grep dtr | awk -F'-' '{ print $NF }' | uniq
+  register: replica_id
+  when: inventory_hostname in groups.dtr-main
+
+- name: add dtr replicas
+  shell:
+    docker run --rm docker/dtr:{{ DTR-Version }} join --ucp-node {{ inventory_hostname }}.{{ domain_name }} --ucp-url {{ UCP_URL }} --ucp-username {{ UCP_Admin }} --ucp-password {{ UCP_Admin_Pass }} --ucp-insecure-tls --existing-replica-id {{ hostvars[DTR-manager]['replica_id']['stdout'] }}  
+  when: inventory_hostname not in groups.dtr-main
