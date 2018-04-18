@@ -5,7 +5,7 @@
 #  vars_files:
 #    - ../group_vars/vars
   tasks:
-    - name: copy the ucp license to the remote machine
+    - name: copy the nginx conf to the remote machine
       copy:
         src=nginx.conf dest=/tmp/
     - name: run nginx container
