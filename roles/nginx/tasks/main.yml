@@ -1,4 +1,4 @@
-- hosts: '123'
+- hosts: 'UCP-lb'
   gather_facts: false
   become_user: root
   become: true
