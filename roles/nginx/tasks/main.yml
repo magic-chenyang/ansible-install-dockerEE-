@@ -1,14 +1,13 @@
 - hosts: '123'
   gather_facts: false
-
+  become_user: root
+  become: true
 #  vars_files:
 #    - ../group_vars/vars
   tasks:
-    - name: nginx123
-      docker_container:
-        name: nginx
-        image: nginx
-#        devices:
-#        - "/root/ansible/roles/nginx/files/nginx.conf:/etc/nginx/nginx.conf:ro"
-#        ports:
-#        - "812:80"
+    - name: copy the ucp license to the remote machine
+      copy:
+        src=nginx.conf dest=/tmp/
+    - name: run nginx container
+      shell:
+        docker run --detach   --name ucp-lb   --restart=unless-stopped   --publish 443:443 -p 80:80 -v /tmp/nginx.conf:/etc/nginx/nginx.conf:ro   nginx:stable-alpine 
